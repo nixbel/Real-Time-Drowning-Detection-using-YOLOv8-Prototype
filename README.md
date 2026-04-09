@@ -5,14 +5,10 @@
 ---
 
 ## 📽️ Prototype Demo
-
+ 
 > Watch the recorded prototype demonstration below:
-
- **Google Drive** link:
-
-```markdown
-[▶ Watch Demo on Google Drive]([[[(https://drive.google.com/file/d/1biwlppbYeGulbKaMIOXd-xxYIhp2RuOw/view?usp=sharing)]
-```
+ 
+[▶ Watch Demo on Google Drive](https://drive.google.com/file/d/1biwlppbYeGulbKaMIOXd-xxYIhp2RuOw/view?usp=sharing)
 
 ---
 
