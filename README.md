@@ -8,21 +8,12 @@
 
 > Watch the recorded prototype demonstration below:
 
-<!-- ✅ REPLACE the URL below with your actual video link -->
-[![Watch the Demo](https://img.shields.io/badge/▶%20Watch%20Demo-Click%20Here-red?style=for-the-badge&logo=youtube)](YOUR_VIDEO_LINK_HERE)
 
-> 📌 **Note:** Replace `YOUR_VIDEO_LINK_HERE` with your actual video URL (YouTube, Google Drive, etc.)
-
-If you're embedding a **YouTube** video, use this format in your GitHub README:
-
-```markdown
-[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
-```
 
 If you're using a **Google Drive** link:
 
 ```markdown
-[▶ Watch Demo on Google Drive](https://drive.google.com/file/d/YOUR_FILE_ID/view)
+[▶ Watch Demo on Google Drive]([https://drive.google.com/file/d/YOUR_FILE_ID/view](https://drive.google.com/file/d/1biwlppbYeGulbKaMIOXd-xxYIhp2RuOw/view?usp=sharing))
 ```
 
 ---
