@@ -348,13 +348,13 @@ python -c "import torch; print(torch.cuda.is_available())"
 
 ## 📄 License
 
-This project is for **academic and research purposes**. Please review the Hugging Face model license before any commercial use.
+This project is for **project and research purposes**.
 
 ---
 
 ## 👤 Author
 
-> Developed as a prototype for AI-assisted aquatic safety monitoring.
+> Jacques Nico Belmonte - AI Developer
 
 ---
 
