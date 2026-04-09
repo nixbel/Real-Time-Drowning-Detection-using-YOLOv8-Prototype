@@ -1,4 +1,4 @@
-# 🏊 Drowning Detection System — YOLOv8 + Streamlit
+# 🏊 Real-Time Drowning Detection System — YOLOv8 + Streamlit
 
 > A real-time AI-powered drowning detection application using a custom-trained YOLOv8 model, Streamlit, and OpenCV. Designed to assist lifeguards and pool safety personnel by automatically detecting drowning events from live RTSP camera feeds or uploaded video files.
 
