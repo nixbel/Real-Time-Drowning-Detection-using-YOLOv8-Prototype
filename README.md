@@ -5,9 +5,9 @@
 ---
 
 ## 📽️ Prototype Demo
- 
+
 > Watch the recorded prototype demonstration below:
- 
+
 <a href="https://drive.google.com/file/d/1biwlppbYeGulbKaMIOXd-xxYIhp2RuOw/view?usp=sharing" target="_blank">▶ Watch Demo on Google Drive</a>
 
 ---
@@ -20,6 +20,9 @@
 - [Project Structure](#-project-structure)
 - [Requirements](#-requirements)
 - [Installation](#-installation)
+- [Model Training](#-model-training)
+  - [Stage 1: Baseline Training](#stage-1-baseline-training)
+  - [Stage 2: Fine-Tuning](#stage-2-fine-tuning)
 - [Model Setup (Hugging Face)](#-model-setup-hugging-face)
 - [Running the App](#-running-the-app)
 - [Usage Guide](#-usage-guide)
@@ -40,7 +43,7 @@
 
 This project is a **real-time drowning detection system** built using:
 
-- **YOLOv8** — A state-of-the-art object detection model fine-tuned on a custom drowning/swimming dataset hosted on Hugging Face.
+- **YOLOv8** — A state-of-the-art object detection model trained in two stages: a baseline run on a swimming/drowning dataset, followed by a fine-tuning phase with advanced augmentation and AdamW optimization.
 - **Streamlit** — Provides the interactive web-based user interface.
 - **OpenCV** — Handles video capture, frame processing, and rendering of bounding boxes.
 - **PyTorch** — Powers the model inference, with optional GPU (CUDA) acceleration.
@@ -72,16 +75,19 @@ The system supports two operation modes:
 ```
 drowning-detection/
 │
-├── prototype-hface.py        # Main Streamlit application
+├── prototype-hface.py              # Main Streamlit application
 │
-├── saved_results/            # Auto-created: processed uploaded videos
+├── train_yolov8_drowning_base      # Stage 1: Baseline training script
+├── train_yolov8_drowning_finetune  # Stage 2: Fine-tuning training script
+│
+├── saved_results/                  # Auto-created: processed uploaded videos
 │   └── processed_YYYYMMDD_HHMMSS.mp4
 │
-├── livefeed_result/          # Auto-created: recorded live feed clips
+├── livefeed_result/                # Auto-created: recorded live feed clips
 │   └── live_record_YYYYMMDD_HHMMSS.mp4
 │
-├── requirements.txt          # Python dependencies
-└── README.md                 # This file
+├── requirements.txt                # Python dependencies
+└── README.md                       # This file
 ```
 
 > `saved_results/` and `livefeed_result/` are automatically created by the app on first run.
@@ -155,13 +161,113 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 
 ---
 
+## 🏋️ Model Training
+
+The model was trained in two stages using the `yolov8detection` conda environment on a CUDA-enabled machine.
+
+### Stage 1: Baseline Training
+
+The baseline model was trained from scratch using **YOLOv8m** on the `SwimmingXDrowningv4` dataset.
+
+**Script:** `train_yolov8_drowning_base`
+
+```bash
+export CUDA_VISIBLE_DEVICES=0
+conda activate yolov8detection
+
+yolo detect train \
+    data="/path/to/SwimmingXDrowningv4/data.yaml" \
+    model=yolov8m.pt \
+    epochs=100 \
+    imgsz=640 \
+    batch=16 \
+    device=0
+```
+
+| Parameter | Value |
+|-----------|-------|
+| Base Model | `yolov8m.pt` |
+| Dataset | SwimmingXDrowningv4 |
+| Epochs | 100 |
+| Image Size | 640 |
+| Batch Size | 16 |
+| Device | GPU 0 |
+
+---
+
+### Stage 2: Fine-Tuning
+
+The best checkpoint from Stage 1 was further fine-tuned on the `drowningdetectiontonet` dataset with advanced hyperparameters and augmentation strategies.
+
+**Script:** `train_yolov8_drowning_finetune`
+
+```bash
+export CUDA_VISIBLE_DEVICES=1
+conda activate yolov8detection
+
+yolo detect train \
+    data="/path/to/drowningdetectiontonet/data.yaml" \
+    model="/path/to/runs/detect/train13/weights/best.pt" \
+    epochs=150 \
+    imgsz=640 \
+    batch=16 \
+    device=1 \
+    lr0=0.001 \
+    lrf=0.01 \
+    momentum=0.937 \
+    weight_decay=0.0005 \
+    warmup_epochs=3 \
+    optimizer=AdamW \
+    patience=20 \
+    save_period=10
+```
+
+**Augmentation Settings:**
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `hsv_h` | 0.015 | Hue jitter |
+| `hsv_s` | 0.7 | Saturation jitter |
+| `hsv_v` | 0.4 | Value/brightness jitter |
+| `degrees` | 5.0 | Rotation range |
+| `translate` | 0.05 | Translation factor |
+| `scale` | 0.8 | Scale factor |
+| `shear` | 0.1 | Shear angle |
+| `fliplr` | 0.5 | Horizontal flip probability |
+| `mosaic` | 0.7 | Mosaic augmentation probability |
+| `mixup` | 0.1 | Mixup augmentation probability |
+| `label_smoothing` | 0.05 | Label smoothing factor |
+| `close_mosaic` | 10 | Disable mosaic for last N epochs |
+
+**Training Hyperparameters:**
+
+| Parameter | Value |
+|-----------|-------|
+| Base Model | Stage 1 `best.pt` |
+| Dataset | drowningdetectiontonet |
+| Optimizer | AdamW |
+| Learning Rate (initial) | 0.001 |
+| Learning Rate (final) | 0.01 |
+| Momentum | 0.937 |
+| Weight Decay | 0.0005 |
+| Warmup Epochs | 3 |
+| Early Stopping Patience | 20 |
+| Epochs | 150 |
+| Image Size | 640 |
+| Batch Size | 16 |
+| Device | GPU 1 |
+
+> The fine-tuned `best.pt` is the model uploaded to Hugging Face and used by the app.
+
+---
+
 ## 🤗 Model Setup (Hugging Face)
 
 The model is automatically downloaded from Hugging Face on first launch. No manual setup needed.
 
 **Model Repository:** [`tonett/drowningv1`](https://huggingface.co/tonett/drowningv1)  
 **Model File:** `best.pt`  
-**Model Type:** YOLOv8 custom-trained
+**Model Type:** YOLOv8m custom-trained (2-stage: baseline + fine-tune)
 
 The download is handled by:
 
