@@ -11,9 +11,9 @@ conda activate yolov8detection
 # ==========================
 # Paths
 # ==========================
-DATA_PATH="/home/masisno/anaconda3/envs/yolov8detection/drowningdetectiontonet/data.yaml"
-BASE_MODEL="/home/masisno/anaconda3/envs/yolov8detection/runs/detect/train13/weights/best.pt"
-PROJECT_DIR="/home/masisno/anaconda3/envs/yolov8detection/runs/detect"
+DATA_PATH="/data.yaml"
+BASE_MODEL="/weights/best.pt"
+PROJECT_DIR="/runs/detect"
 
 # ==========================
 # Training
