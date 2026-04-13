@@ -10,7 +10,7 @@ conda activate yolov8detection
 
 # Run YOLOv8 training (baseline)
 yolo detect train \
-    data="/home/masisno/anaconda3/envs/yolov8detection/SwimmingXDrowningv4/data.yaml"\
+    data="data.yaml"\
     model= yolov8m.pt\
     epochs=100 \
     imgsz=640 \
