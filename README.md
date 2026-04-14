@@ -36,6 +36,8 @@
 - [Known Limitations](#-known-limitations)
 - [Future Improvements](#-future-improvements)
 - [License](#-license)
+- [Author](#-author)
+- [Date Created](#-date-created)
 
 ---
 
@@ -450,13 +452,19 @@ python -c "import torch; print(torch.cuda.is_available())"
 
 ## 📄 License
 
-This project is for **project and research purposes**.
+This project is for **commission project and research purposes**.
 
 ---
 
 ## 👤 Author
 
 > Jacques Nico Belmonte - AI Developer
+
+---
+
+##  📅 Date Created
+
+> July 2025
 
 ---
 
