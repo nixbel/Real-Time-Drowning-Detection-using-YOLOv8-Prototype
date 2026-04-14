@@ -452,7 +452,7 @@ python -c "import torch; print(torch.cuda.is_available())"
 
 ## 📄 License
 
-This project is for **commission project and research purposes**.
+This project is for **project and research purposes**.
 
 ---
 
